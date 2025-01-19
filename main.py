@@ -79,8 +79,10 @@ async def run_bot2():
 
 # تشغيل البوتين في وضع دائم
 def main():
-    subprocess.Popen(["gunicorn", "app:app", "-b", "0.0.0.0:8080"])
+    server()
+
     loop = asyncio.get_event_loop()
+	
     # تشغيل بوت الأول
     task1 = asyncio.ensure_future(run_bot1())
     # تشغيل بوت الثاني
