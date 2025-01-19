@@ -1,0 +1,15 @@
+pyTelegramBotAPI ==4.16.1
+flask ==3.0.3
+gunicorn ==23.0.0
+pyro-listener==2023.9.19
+pyrogram==2.0.106
+pyrogram-repl===2.0.106
+python-dotenv
+#googletrans==4.0.0-rc1
+googletrans==4.0.2
+python-bidi
+arabic_reshaper
+telethon 
+pyromod
+requests 
+langdetect
