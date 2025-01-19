@@ -106,11 +106,9 @@ text_to_add=data.get("text_to_add",[])
 source_destination_mapping = data.get("source_destination_mapping", {})
 
 
-app2 = Client(
-  name="stringsession2",
-  api_id=api_id, api_hash=api_hash,
-  bot_token=token, in_memory=True
-)
+bot_token = "7614791348:AAEGvisvBOjcJeVi-kOzSS2hOElg2df3sDM"
+app2 = Client('Roozbot', api_id, api_hash,bot_token=bot_token)
+
 CHANNEL = "@tt66xxxn" # قناه الاشتراك 
 bot_token = "7614791348:AAEGvisvBOjcJeVi-kOzSS2hOElg2df3sDM" # بوت التوكن المستخدم في الاشتراك
 listener = Listener(client=app2)
