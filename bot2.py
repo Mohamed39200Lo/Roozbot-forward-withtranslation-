@@ -170,7 +170,22 @@ async def delete_mapping(_: Client, message: Message):
     delete_mappings()
     await message.reply("تم حذف القوائم المحفوظة بنجاح.")
 
-
+@app2.on_message(filters.command("deletemap2"))
+async def delete_mapping(_: Client, message: Message):
+    await message.reply("أدخل معرف قناة المصدر التي ترغب في حذفها:")
+    source_channel_id = await get_user_input(message.from_user.id)
+    if source_channel_id is None:
+        return await message.reply("تم إلغاء الأمر.")
+    
+    # التأكد من أن المفتاح هو نص
+    source_channel_id = str(source_channel_id)
+    if source_channel_id in source_destination_mapping:
+        del source_destination_mapping[source_channel_id]
+        data["source_destination_mapping"] = source_destination_mapping
+        save_data(data)
+        await message.reply(f"تم حذف القناة المصدر {source_channel_id} مع أهدافها بنجاح.")
+    else:
+        await message.reply("القناة المصدر غير موجودة في القائمة.")
 
 
 # دوال حذف العناصر الأخرى
