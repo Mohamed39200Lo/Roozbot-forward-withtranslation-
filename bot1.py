@@ -141,6 +141,9 @@ async def preprocess_message_with_regex(message_text):
         if detected_language == "en":  # النص إنجليزي
             # الترجمة إلى العربية
             text = await translate_to_arabic_without_links(text)
+            for pattern, replacement in sentence_patterns_to_replace.items():
+            	text = pattern.sub(replacement, text)
+
 
             # إضافة النص الإضافي
             additional_text = data.get("text_to_add", "")
@@ -172,7 +175,7 @@ async def copy_message(event):
 
         # إذا كانت الرسالة جزءًا من مجموعة وسائط
         if event.grouped_id:
-            time.sleep(1)
+            time.sleep(5)
             if event.grouped_id in processed_media_groups:
                 return
 
