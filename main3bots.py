@@ -10,7 +10,6 @@ import subprocess
 from telethon import TelegramClient, errors
 from app import server
 import gunicorn
-from Botcontact import run_bot_contact
 # التوكن الخاص بالبوت الأول
 bot_token = "6933260431:AAG59xJfPUqaDZzS7S6uLk27fEtRAGH2mPg"
 
@@ -79,24 +78,29 @@ async def run_bot2():
         pass
 
 # تشغيل البوتين في وضع دائم
-def main():
-    server()
+import subprocess
 
+def main():
+    server()  # تشغيل السيرفر
+
+    # تشغيل Botcontact.py كعملية مستقلة
+    botcontact_process = subprocess.Popen(["python", "Botcontact.py"])
+    
     loop = asyncio.get_event_loop()
-	
+
     # تشغيل بوت الأول
     task1 = asyncio.ensure_future(run_bot1())
     # تشغيل بوت الثاني
     task2 = asyncio.ensure_future(run_bot2())
-    task3 = asyncio.ensure_future(run_bot_contact()) 
 
     try:
-        loop.run_until_complete(asyncio.gather(task1, task2 ,task3))
+        loop.run_until_complete(asyncio.gather(task1, task2))
     except KeyboardInterrupt:
         pass
     except Exception as e:
         print(f"An error occurred in one of the bots: {e}")
     finally:
+        botcontact_process.terminate()  # إنهاء `Botcontact.py` عند توقف البوت الرئيسي
         loop.stop()
 
 if __name__ == "__main__":
