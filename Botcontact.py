@@ -1,6 +1,7 @@
+
 import telebot
 from telebot import types
-#from app import server
+from app import server
 import logging
 import time
 from telebot.types import ReactionTypeEmoji
@@ -201,14 +202,13 @@ def handle_customer_service_reply(message):
     except Exception as e:
         logging.error(f"Error in handle_customer_service_reply: {e}")
 
-
+server()
 
 # تشغيل البوت مع إعادة التشغيل التلقائي في حالة التوقف
-async def run_bot_contact():
-      # تشغيل الخادم إذا لزم الأمر
-    while True:
-        try:
-            bot.polling(none_stop=True)
-        except Exception as e:
-            logging.error(f"Botcontact.py stopped due to an error: {e}")
-            time.sleep(5)
+while True:
+    try:
+        bot.polling(none_stop=True)  # none_stop=True يمنع البوت من التوقف عند حدوث أخطاء بسيطة
+    except Exception as e:
+        logging.error(f"Bot stopped due to an error: {e}")
+        time.sleep(5)  # انتظر 5 ثواني قبل إعادة التشغيل
+        print("إعادة تشغيل البوت...")
