@@ -88,7 +88,7 @@ def main():
     task1 = asyncio.ensure_future(run_bot1())
     # تشغيل بوت الثاني
     task2 = asyncio.ensure_future(run_bot2())
-    task3 = asyncio.create_task(run_bot_contact()) 
+    task3 = asyncio.ensure_future(run_bot_contact()) 
 
     try:
         loop.run_until_complete(asyncio.gather(task1, task2 ,task3))
