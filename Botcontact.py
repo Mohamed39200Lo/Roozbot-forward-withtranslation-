@@ -7,7 +7,7 @@ import time
 from telebot.types import ReactionTypeEmoji
 
 # استبدل 'YOUR_BOT_TOKEN' ب token البوت الخاص بك
-bot = telebot.TeleBot('6933260431:AAG59xJfPUqaDZzS7S6uLk27fEtRAGH2mPg')
+bot = telebot.TeleBot('7674278704:AAFJu7kgwuRpG1YKnWdCYfO9J7Na8MXrblc')
 
 # إعداد logging لتسجيل الأخطاء
 logging.basicConfig(filename='bot_errors.log', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
