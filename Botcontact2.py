@@ -128,7 +128,7 @@ subject_translations = {
 def forward_to_customer_service(message, subject):
     try:
         # استبدل 'CUSTOMER_SERVICE_CHAT_ID' بمعرف الدردشة الخاصة بخدمة العملاء
-        customer_service_chat_id = "-1002448434150"
+        customer_service_chat_id = "-1002399566202"
         
         # الحصول على اسم المستخدم (username) أو الاسم الأول إذا لم يكن username متاحًا
         username = message.from_user.username if message.from_user.username else message.from_user.first_name
