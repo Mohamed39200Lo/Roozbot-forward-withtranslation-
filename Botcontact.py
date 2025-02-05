@@ -79,7 +79,12 @@ def handle_multi_step_message(message):
             bot.send_message(chat_id, "تم إرسال طلبك إلى خدمة العملاء.")
         else:
             user_messages[chat_id].append(message)
-            bot.send_message(chat_id, "تم استلام الرسالة. يمكنك إرسال المزيد من التفاصيل أو الضغط على /done لإتمام الإرسال.")
+            bot.send_message(chat_id, """ لخدمتك بشكل اسرع نرجو ارسال المزيد من التفاصيل لطلباتك 😘
+
+أو الضغط على /done  👉  هنا 
+ لإتمام الإرسال لخدمة العملاء
+
+📍ملاحظة : عدم الضغط على done لن تصلنا رسائلك 😔""")
             bot.register_next_step_handler(message, handle_multi_step_message)
     except Exception as e:
         logging.error(f"Error in handle_multi_step_message: {e}")
