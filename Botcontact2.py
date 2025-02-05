@@ -30,7 +30,7 @@ def create_inline_keyboard():
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     try:
-        bot.send_message(message.chat.id, "مرحبًا! كيف يمكنني مساعدتك؟ Rooz", reply_markup=create_inline_keyboard())
+        bot.send_message(message.chat.id, "مرحبًا! كيف يمكنني مساعدتك؟ ", reply_markup=create_inline_keyboard())
     except Exception as e:
         logging.error(f"Error in send_welcome: {e}")
 
