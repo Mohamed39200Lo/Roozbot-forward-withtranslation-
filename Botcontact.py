@@ -84,7 +84,7 @@ def handle_multi_step_message(message):
 أو الضغط على /done  👉  هنا 
  لإتمام الإرسال لخدمة العملاء
 
-📍ملاحظة : عدم الضغط على done لن تصلنا رسائلك 😔""")
+📍ملاحظة : عدم الضغط على /done لن تصلنا رسائلك 😔""")
             bot.register_next_step_handler(message, handle_multi_step_message)
     except Exception as e:
         logging.error(f"Error in handle_multi_step_message: {e}")
