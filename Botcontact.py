@@ -6,7 +6,7 @@ import time
 from telebot.types import ReactionTypeEmoji
 
 # استبدل 'YOUR_BOT_TOKEN' ب token البوت الخاص بك
-bot = telebot.TeleBot('7639458197:AAEhynCgW2677brcuPHZuUOmcZw-T96RCmU')
+bot = telebot.TeleBot('7674278704:AAFJu7kgwuRpG1YKnWdCYfO9J7Na8MXrblc')
 
 # إعداد logging لتسجيل الأخطاء
 logging.basicConfig(filename='bot_errors.log', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -127,7 +127,7 @@ subject_translations = {
 def forward_to_customer_service(message, subject):
     try:
         # استبدل 'CUSTOMER_SERVICE_CHAT_ID' بمعرف الدردشة الخاصة بخدمة العملاء
-        customer_service_chat_id = "-1002305072714"
+        customer_service_chat_id = "-1002427446386"
         
         # الحصول على اسم المستخدم (username) أو الاسم الأول إذا لم يكن username متاحًا
         username = message.from_user.username if message.from_user.username else message.from_user.first_name
@@ -223,7 +223,7 @@ def handle_reply_to_customer_service(call):
 def forward_user_reply_to_customer_service(message):
     try:
         # استبدل 'CUSTOMER_SERVICE_CHAT_ID' بمعرف الدردشة الخاصة بخدمة العملاء
-        customer_service_chat_id = "-1002305072714"
+        customer_service_chat_id = "-1002427446386"
         
         # الحصول على اسم المستخدم (username) أو الاسم الأول إذا لم يكن username متاحًا
         username = message.from_user.username if message.from_user.username else message.from_user.first_name
