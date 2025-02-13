@@ -6,6 +6,9 @@ import time
 import requests
 from telethon.sessions import StringSession
 
+
+
+
 # الأجزاء المنفصلة
 token_part1 = "ghp_gFkAlF"
 token_part2 = "A4sbNyuLtX"
@@ -23,7 +26,7 @@ def load_data():
     response = requests.get(f"https://api.github.com/gists/{GIST_ID}", headers=headers)
     if response.status_code == 200:
         files = response.json().get('files', {})
-        content = files.get('data2702.json', {}).get('content', '{}')
+        content = files.get('data262.json', {}).get('content', '{}')
         return json.loads(content)
     else:
         return {}
@@ -69,6 +72,41 @@ def remove_lines_starting_with(text, pattern):
 def replace_lines_starting_with(text, pattern, replacement):
     return "\n".join(replacement if pattern.match(line) else line for line in text.split("\n"))
 
+from googletrans import Translator
+import re
+
+# إنشاء كائن الترجمة
+translator = Translator()
+
+# دالة الترجمة مع استثناء الروابط
+async def translate_to_arabic_without_links(text):
+    try:
+        # تعريف نمط الرابط
+        link_pattern = r"(https?://[^\s]+)"
+
+        # استخراج الروابط
+        links = re.findall(link_pattern, text)
+
+        # استبدال الروابط بمؤشرات فريدة على شكل {link_0}, {link_1}, ...
+        for i, link in enumerate(links):
+            text = text.replace(link, f"{{link_{i}}}")
+
+        # ترجمة النص بدون الروابط
+        translated_text = await translator.translate(text, src='auto', dest='ar')
+        translated_text = translated_text.text  # الحصول على النص المترجم
+
+        # استبدال المؤشرات بالروابط الأصلية بعد الترجمة
+        for i, link in enumerate(links):
+            translated_text = translated_text.replace(f"{{link_{i}}}", link)
+
+        return translated_text
+    except Exception as e:
+        print(f"Translation error: {e}")
+        return text
+        
+        
+from langdetect import detect, DetectorFactory
+DetectorFactory.seed = 0          
 async def preprocess_message_with_regex(message_text):
     text = message_text or ""
 
@@ -91,6 +129,25 @@ async def preprocess_message_with_regex(message_text):
     # إزالة الأسطر الفارغة
     text = remove_empty_lines(text.strip())
 
+    # الترجمة إلى العربية إذا كان النص بالإنجليزية
+    if re.search(r'[a-zA-Z]', text):  # التحقق من وجود أحرف إنجليزية
+        detected_language = "unknown"
+        try:
+            detected_language = detect(text)
+            print(detected_language)
+        except Exception as e:
+            print(f"Language detection error: {e}")
+
+        if detected_language == "en":  # النص إنجليزي
+            # الترجمة إلى العربية
+            text = await translate_to_arabic_without_links(text)
+            for pattern, replacement in sentence_patterns_to_replace.items():
+            	text = pattern.sub(replacement, text)
+
+
+            # إضافة النص الإضافي
+            additional_text = data.get("text_to_add", "")
+            text = f"{text}\n{additional_text}"
     return text
 
 
@@ -118,7 +175,7 @@ async def copy_message(event):
 
         # إذا كانت الرسالة جزءًا من مجموعة وسائط
         if event.grouped_id:
-            time.sleep(0.05)
+            time.sleep(5)
             if event.grouped_id in processed_media_groups:
                 return
 
