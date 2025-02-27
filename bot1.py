@@ -127,7 +127,7 @@ async def preprocess_message_with_regex(message_text):
         text = replace_lines_starting_with(text, pattern, replacement)
 
     # إزالة الأسطر الفارغة
-    text = remove_empty_lines(text.strip())
+    #text = remove_empty_lines(text.strip())
 
     # الترجمة إلى العربية إذا كان النص بالإنجليزية
     if re.search(r'[a-zA-Z]', text):  # التحقق من وجود أحرف إنجليزية
