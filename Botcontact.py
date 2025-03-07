@@ -7,7 +7,7 @@ from app import server
 #from app import server
 
 # استبدل 'YOUR_BOT_TOKEN' ب token البوت الخاص بك
-bot = telebot.TeleBot('7674278704:AAFJu7kgwuRpG1YKnWdCYfO9J7Na8MXrblc')
+bot = telebot.TeleBot('7661712193:AAEGgBjvY8OInWlQu3zVgznj1zTmTLQNh6g')
 
 # إعداد logging لتسجيل الأخطاء
 logging.basicConfig(filename='bot_errors.log', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -26,8 +26,56 @@ def create_inline_keyboard():
     btn3 = types.InlineKeyboardButton('تحديث رابط منتج مغلق 🖇', callback_data='update_closed_link')
     btn4 = types.InlineKeyboardButton('استفسار عن طلب سابق 👨‍💻', callback_data='previous_order_inquiry')
     btn5 = types.InlineKeyboardButton('لدي مشكلة في طلبي بعد الاستلام اريد ارجاعه 📫', callback_data='return_request')
-    markup.add(btn1, btn2, btn3, btn4, btn5)
+    btn6 = types.InlineKeyboardButton('📞 للتواصل: ', url='https://t.me/roozbrands_bot')
+    btn7 = types.InlineKeyboardButton('🔗 اريد رابط علي اكسبريس', callback_data='aliexpress_link')
+    markup.add(btn1, btn2, btn3, btn4, btn5, btn7)
+    markup.add(btn6)
     return markup
+    
+    
+    
+@bot.callback_query_handler(func=lambda call: call.data == 'aliexpress_link')
+def handle_aliexpress_link(call):
+    chat_id = call.message.chat.id
+
+    try:
+        # تحديث حالة المستخدم
+        user_state[chat_id] = 'aliexpress_link'
+        user_messages[chat_id] = []
+
+        # إرسال الرسالة التوجيهية
+        bot.send_message(chat_id, "📸 يرجى إرسال صورة المنتج.")
+        bot.register_next_step_handler(call.message, handle_aliexpress_message)
+
+    except Exception as e:
+        logging.error(f"Error in handle_aliexpress_link: {e}")
+        
+        
+def handle_aliexpress_message(message):
+    chat_id = message.chat.id
+
+    try:
+        if message.photo:
+            user_messages[chat_id].append(message)
+
+            bot.send_message(chat_id, """ 
+📍 لخدمتك بشكل أسرع، يرجى إرسال المزيد من التفاصيل إن وجدت 😘
+أو الضغط على /done  👉  هنا لإتمام الإرسال لخدمة العملاء
+
+🔔 ملاحظة: عدم الضغط على /done لن تصلنا رسائلك 😔""")
+
+            bot.register_next_step_handler(message, handle_aliexpress_message)
+        elif message.text == '/done':
+            forward_to_customer_service(message, 'aliexpress_link')
+            user_messages[chat_id] = []
+            bot.send_message(chat_id, "تم إرسال طلبك إلى خدمة العملاء.")
+        else:
+            bot.send_message(chat_id, "⚠️ يرجى إرسال صورة المنتج فقط.")
+            bot.register_next_step_handler(message, handle_aliexpress_message)
+
+    except Exception as e:
+        logging.error(f"Error in handle_aliexpress_message: {e}")        
+        
 
 # بدء البوت
 @bot.message_handler(commands=['start'])
