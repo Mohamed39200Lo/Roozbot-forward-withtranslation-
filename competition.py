@@ -7,6 +7,7 @@ import random
 import threading
 from datetime import datetime, timedelta
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+from app import server
 
 # استبدل بـ token البوت الخاص بك
 TOKEN = "7710195977:AAEiamn8qPONy90CxvmS29iWXv8f1rFUBEU"
@@ -619,4 +620,5 @@ def check_pending_giveaways():
 # بدء تشغيل البوت مع التحقق من المسابقات المعلقة
 threading.Thread(target=check_pending_giveaways, daemon=True).start()
 print("🤖 البوت يعمل الآن...")
+server()
 bot.infinity_polling(none_stop=True)
