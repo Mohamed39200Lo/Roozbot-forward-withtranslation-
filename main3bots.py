@@ -86,7 +86,7 @@ def main():
     # تشغيل Botcontact.py كعملية مستقلة
     botcontact_process = subprocess.Popen(["python", "Botcontact.py"])
     botcontact2_process = subprocess.Popen(["python", "Botcontact2.py"])
-    
+    competition_process =subprocess.Popen(["python", "competition.py"])
     loop = asyncio.get_event_loop()
 
     # تشغيل بوت الأول
