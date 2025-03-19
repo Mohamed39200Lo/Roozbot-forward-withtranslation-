@@ -484,6 +484,7 @@ def join_giveaway(call):
     else:
         bot.answer_callback_query(call.id, "⚠️ أنت بالفعل مشارك في هذه المسابقة.")
 
+
 # جدولة إعلان النتائج
 @handle_errors
 def schedule_giveaway_result(user_id, giveaway_idx):
@@ -501,37 +502,33 @@ def schedule_giveaway_result(user_id, giveaway_idx):
                     bot.send_message(user_id, "⚠️ لا يوجد مشاركين في المسابقة لاختيار الفائزين.")
                     return
 
-                unique_participants = []
-                seen_user_ids = set()
+                # تصفية المشاركين الذين ليس لديهم username
+                valid_participants = [p for p in giveaway["participants"] if p.get("username")]
 
-                for participant in giveaway["participants"]:
-                    if isinstance(participant, str):
-                        user_id_winner = participant
-                        if user_id_winner not in seen_user_ids:
-                            seen_user_ids.add(user_id_winner)
-                            unique_participants.append({"user_id": user_id_winner, "username": None})
-                    elif isinstance(participant, dict):
-                        user_id_winner = participant["user_id"]
-                        if user_id_winner not in seen_user_ids:
-                            seen_user_ids.add(user_id_winner)
-                            unique_participants.append(participant)
-                    else:
+                # تصفية الأدمن ومالك القناة
+                final_participants = []
+                for participant in valid_participants:
+                    try:
+                        chat_member = bot.get_chat_member(channel, participant["user_id"])
+                        if chat_member.status not in ["administrator", "creator"]:
+                            final_participants.append(participant)
+                    except Exception as e:
                         continue
 
-                winners_count = min(giveaway["winners_count"], len(unique_participants))
-                winners = random.sample(unique_participants, winners_count)
+                if not final_participants:
+                    bot.send_message(user_id, "⚠️ لا يوجد مشاركين صالحين لاختيار الفائزين.")
+                    return
+
+                winners_count = min(giveaway["winners_count"], len(final_participants))
+                winners = random.sample(final_participants, winners_count)
 
                 winners_message = "🎉 *نتائج المسابقة*\n\n🏆 الفائزون:\n"
                 valid_winners = []
 
                 for winner in winners:
                     try:
-                        user_id_winner = winner["user_id"]
                         username = winner["username"]
-                        if not username:
-                            user = bot.get_chat_member(channel, user_id_winner).user
-                            username = user.username or user.first_name
-                        valid_winners.append(f"@{username}" if username else user_id_winner)
+                        valid_winners.append(f"@{username}")
                     except Exception as e:
                         continue
 
@@ -561,7 +558,7 @@ def schedule_giveaway_result(user_id, giveaway_idx):
 
     except Exception as e:
         bot.send_message(user_id, f"⚠️ حدث خطأ أثناء جدولة النتائج: {str(e)}")
-
+        
 # حذف المسابقة
 @bot.callback_query_handler(func=lambda call: call.data == "delete_giveaway")
 @handle_errors
