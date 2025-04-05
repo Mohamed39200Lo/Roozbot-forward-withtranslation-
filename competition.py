@@ -11,7 +11,7 @@ from app import server
 import requests  # لإضافة التفاعل مع GitHub Gist
 from telebot.formatting import escape_markdown
 # استبدل بـ token البوت الخاص بك
-TOKEN = "7710195977:AAEiamn8qPONy90CxvmS29iWXv8f1rFUBEU"
+TOKEN = "7946027590:AAF85xwgdT9LThXUV_esXg87Lutk5Kg_Ywg"
 bot = telebot.TeleBot(TOKEN)
 
 # تحميل البيانات من الملف
