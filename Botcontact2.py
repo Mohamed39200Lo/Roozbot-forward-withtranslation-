@@ -7,7 +7,7 @@ from app import server
 #from app import server
 
 # استبدل 'YOUR_BOT_TOKEN' ب token البوت الخاص بك
-bot = telebot.TeleBot('7831660630:AAHNYrla0bbvhXwSOOwbo-8ivEe-SlQYfg0')
+bot = telebot.TeleBot('7831660630:AAGCZbisBI9WGof52ri2cvXkQ9g5cULQ588')
 
 # إعداد logging لتسجيل الأخطاء
 logging.basicConfig(filename='bot_errors.log', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
